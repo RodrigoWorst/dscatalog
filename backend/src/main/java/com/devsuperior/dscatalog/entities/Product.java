@@ -39,7 +39,7 @@ public class Product implements Serializable{
 	@JoinTable(name = "tb_product_category", 
 			joinColumns = @JoinColumn(name = "product_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	Set<Category> cetegories = new HashSet<>();
+	Set<Category> categories = new HashSet<>();
 	
 	public Product() {
 	}
@@ -102,8 +102,8 @@ public class Product implements Serializable{
 		this.date = date;
 	}
 
-	public Set<Category> getCetegories() {
-		return cetegories;
+	public Set<Category> getCategories() {
+		return categories;
 	}
 
 	@Override
