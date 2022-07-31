@@ -21,7 +21,7 @@ public class ResourceExceptionHandler {
 		StandartError err = new StandartError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(status.value());
-		err.setError("Resource nort found");
+		err.setError("Resource not found");
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
