@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.devsuperior.dscatalog.entities.Category;
@@ -20,6 +21,8 @@ public class ProductDTO implements Serializable{
 	@Size(min = 5, max = 69, message = "O produto deve conter entre 5 a 60 catacteres")
 	private String name;
 	private String description;
+	
+	@Positive(message = "Preço deve ser maior que zero")
 	private Double price;
 	private String imgUrl;
 	private Instant date;
