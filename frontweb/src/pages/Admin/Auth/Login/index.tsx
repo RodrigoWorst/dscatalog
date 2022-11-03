@@ -3,8 +3,9 @@ import ButtonIcon from 'components/ButtonIcon';
 
 import './styles.css';
 import { useForm } from 'react-hook-form';
-import { getAuthData, requestBackendLogin, saveAuthData } from 'util/request';
-import { useState } from 'react';
+import { getTokenData, requestBackendLogin, saveAuthData } from 'util/request';
+import { useContext, useState } from 'react';
+import { AuthContext } from 'AuthContext';
 
 type FormData = {
   username: string;
@@ -12,6 +13,7 @@ type FormData = {
 };
 
 const Login = () => {
+  const { setAuthContextData } = useContext(AuthContext);
   const [hasError, setHasError] = useState(false);
   const {
     register,
@@ -19,21 +21,21 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const history = useHistory()
+  const history = useHistory();
 
   const onSubmit = (formData: FormData) => {
     requestBackendLogin(formData)
       .then((response) => {
         saveAuthData(response.data);
-        const token = getAuthData().access_token;
-        console.log(token);
         setHasError(false);
-        console.log('SUCESSO', response.data);
-        history.push('/admin')
+        setAuthContextData({
+          authenticated: true,
+          tokenData: getTokenData(),
+        });
+        history.push('/admin');
       })
       .catch((error) => {
         setHasError(true);
-        console.log('ERROR', error);
       });
   };
 
@@ -56,7 +58,9 @@ const Login = () => {
               },
             })}
             type="text"
-            className={`form-control base-input ${errors.username ? 'is-invalid' : ''}`}
+            className={`form-control base-input ${
+              errors.username ? 'is-invalid' : ''
+            }`}
             placeholder="Email"
             name="username"
           />
@@ -70,7 +74,9 @@ const Login = () => {
               required: 'Campo obrigatório',
             })}
             type="password"
-            className={`form-control base-input ${errors.password ? 'is-invalid' : ''}`}
+            className={`form-control base-input ${
+              errors.password ? 'is-invalid' : ''
+            }`}
             placeholder="Password"
             name="password"
           />
